@@ -1,0 +1,34 @@
+.footerRow {
+  height: auto;
+  background-color: #4D4D4E;
+  color: #F8F9FA;
+}
+
+.logo-footer {
+  h3 {
+    font-family: 'Just Me Again Down Here', cursive;
+    font-size: 3em;
+    line-height: .5em;
+  }
+}
+
+.legalNotice {
+  color: #F8F9FA;
+}
+
+.sn-icon {
+  padding: 0px 5px 0px 5px;
+  color: #F8F9FA;
+  font-size: calc(17px + 12 * (100vw - 200px) / 1400);
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+
+.myFooter {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
