@@ -1,0 +1,16 @@
+.siteConcept {
+  background: #000000;
+  opacity: 0.7;
+  text-align: center;
+  .title, .concept {
+    color: white;
+    background: none;
+  }
+}
+
+.bannerImg {
+  margin-top: -55px;
+  object-fit: cover;
+  max-height: 450px;
+  width: 100%;
+}
