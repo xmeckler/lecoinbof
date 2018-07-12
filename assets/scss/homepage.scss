@@ -2,14 +2,26 @@
   background: #000000;
   opacity: 0.7;
   text-align: center;
-  .title, .concept {
+  transform: translateY(-100%);
+  height: auto;
+  .concept {
     color: white;
-    background: none;
+    font-size: calc(13px + 11 * (100vw - 200px) / 1400);
+  }
+  .slogan {
+    color: white;
+    font-size: calc(17px + 12 * (100vw - 200px) / 1400);
+    font-weight: bold;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .concept {
+    display: none;
   }
 }
 
 .bannerImg {
-  margin-top: -55px;
   object-fit: cover;
   max-height: 450px;
   width: 100%;
