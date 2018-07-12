@@ -15,6 +15,29 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+p {
+  font-size: calc(11px + 10 * (100vw - 200px) / 1400);
+}
+
+h1 {
+  font-size: calc(20px + 15 * (100vw - 200px) / 1400);
+}
+
+h2 {
+  font-size: calc(19px + 14 * (100vw - 200px) / 1400);
+}
+h3 {
+  font-size: calc(17px + 12 * (100vw - 200px) / 1400);
+}
+
+h4 {
+  font-size: calc(15px + 11 * (100vw - 200px) / 1400);
+}
+
+h5 {
+  font-size: calc(13px + 11 * (100vw - 200px) / 1400);
+}
+
 .nav-item {
   padding-left: 2em;
 }
