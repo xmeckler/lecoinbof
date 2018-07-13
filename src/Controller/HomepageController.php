@@ -12,8 +12,16 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        return $this->render('homepage/index.html.twig', [
+        return $this->render('homepage/login.html.twig', [
             'controller_name' => 'HomepageController',
         ]);
+    }
+
+    /**
+     * @Route("/admin", name="admin")
+     */
+    public function admin()
+    {
+        return $this->render('admin/index.html.twig');
     }
 }
