@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Connexion{% endblock %}
+
 {% block body %}
     {% if error %}
         <div class="alert alert-danger">
@@ -8,7 +10,7 @@
     {% endif %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-4 offset-sm-4 mt-3 shadow">
+        <div class="col-sm-4 offset-sm-4 my-5 shadow">
             <div class="well">
                 <form action="{{ path('security_login') }}" method="post">
                     <fieldset>
@@ -31,6 +33,10 @@
                         </div>
                     </fieldset>
                 </form>
+                <div class="text-center mt-4">
+                    <p><em>Pas encore de compte chez nous ? Inscrivez-vous !</em></p>
+                    <a class="btn btn-outline-primary mb-3" href="{{ path('user_registration') }}" role="button"><i class="fas fa-pen-fancy"></i> S'inscrire</a>
+                </div>
             </div>
         </div>
     </div>
