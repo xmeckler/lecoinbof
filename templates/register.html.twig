@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+<div class="row">
+    <div class="col-md-6 offset-md-3 my-5 shadow">
+        <div class="text-center">
+            <h1><i class="fas fa-pen-nib"></i> Inscription</h1>
+        </div>
+        {{ form_start(form) }}
+            {{ form_row(form.username, { 'label': 'Nom d\'utilisateur' }) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password.first) }}
+            {{ form_row(form.password.second) }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mb-3"><i class="far fa-save"></i> S'inscrire</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

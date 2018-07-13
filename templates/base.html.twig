@@ -28,15 +28,32 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
+                        {% if is_granted("IS_AUTHENTICATED_FULLY") %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="far fa-user"></i> Se connecter</a>
+                            <a href="#" class="nav-link"><i class="far fa-newspaper"></i> Mes annonces</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link"><i class="fas fa-pen-fancy"></i> Mes demandes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-user-circle"></i> Mon Compte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security_logout') }}"><i class="fas fa-sign-out-alt"></i> Se Déconnecter</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security_login')}}"><i class="far fa-user"></i> Se connecter</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
         </header>
         {% block banner %}{% endblock %}
+        <div class="container">
         {% block body %}{% endblock %}
+        </div>
         {% include 'footer.html.twig' %}
         <script src="{{ asset('build/js/app.js') }}"></script>
         {% block javascripts %}{% endblock %}

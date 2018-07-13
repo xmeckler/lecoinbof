@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey }}
+        </div>
+    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 offset-sm-4 my-5 shadow">
+            <div class="well">
+                <form action="{{ path('security_login') }}" method="post">
+                    <fieldset>
+                        <div class="text-center">
+                            <legend><i class="fa fa-lock" aria-hidden="true"></i> Connexion</legend>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Nom d'utilisateur</label>
+                            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Mot de passe</label>
+                            <input type="password" id="password" name="_password" class="form-control" />
+                        </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Se connecter
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="text-center mt-4">
+                    <p><em>Pas encore de compte chez nous ? Inscrivez-vous !</em></p>
+                    <a class="btn btn-outline-primary mb-3" href="{{ path('user_registration') }}" role="button"><i class="fas fa-pen-fancy"></i> S'inscrire</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}
