@@ -1,3 +1,8 @@
+$custom-file-text: (
+        en: "Browse",
+        fr: "Parcourir"
+);
+
 @import "~bootstrap/scss/bootstrap";
 @import "footer.scss";
 
@@ -45,3 +50,4 @@ h5 {
 .nav-link {
   font-size: 1em;
 }
+
