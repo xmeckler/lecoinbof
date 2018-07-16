@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,6 +47,22 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="json")
      */
     private $roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Advertisement", mappedBy="author", orphanRemoval=true)
+     */
+    private $publishedAds;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Advertisement", mappedBy="customers")
+     */
+    private $repliedAds;
+
+    public function __construct()
+    {
+        $this->publishedAds = new ArrayCollection();
+        $this->repliedAds = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -137,5 +155,64 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized): void
     {
         [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|Advertisement[]
+     */
+    public function getPublishedAds(): Collection
+    {
+        return $this->publishedAds;
+    }
+
+    public function addPublishedAd(Advertisement $publishedAd): self
+    {
+        if (!$this->publishedAds->contains($publishedAd)) {
+            $this->publishedAds[] = $publishedAd;
+            $publishedAd->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublishedAd(Advertisement $publishedAd): self
+    {
+        if ($this->publishedAds->contains($publishedAd)) {
+            $this->publishedAds->removeElement($publishedAd);
+            // set the owning side to null (unless already changed)
+            if ($publishedAd->getAuthor() === $this) {
+                $publishedAd->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Advertisement[]
+     */
+    public function getRepliedAds(): Collection
+    {
+        return $this->repliedAds;
+    }
+
+    public function addRepliedAd(Advertisement $repliedAd): self
+    {
+        if (!$this->repliedAds->contains($repliedAd)) {
+            $this->repliedAds[] = $repliedAd;
+            $repliedAd->addCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepliedAd(Advertisement $repliedAd): self
+    {
+        if ($this->repliedAds->contains($repliedAd)) {
+            $this->repliedAds->removeElement($repliedAd);
+            $repliedAd->removeCustomer($this);
+        }
+
+        return $this;
     }
 }
