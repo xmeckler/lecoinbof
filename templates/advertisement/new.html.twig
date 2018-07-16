@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Advertisement{% endblock %}
+{% block title %}Publier une annonce{% endblock %}
 
 {% block body %}
-    <h1>Create new Advertisement</h1>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 my-5 shadow">
+            <div class="text-center">
+                <h1>Publier une annonce</h1>
+            </div>
 
-    {{ include('advertisement/_form.html.twig') }}
-
-    <a href="{{ path('advertisement_index') }}">back to list</a>
+            {{ include('advertisement/_form.html.twig') }}
+            <div class="text-center">
+                <a href="{{ path('advertisement_index') }}" class="btn btn-dark float-md-left mb-5 mb-md-3"><i class="fas fa-chevron-left"></i> Retour à mes annonces</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
