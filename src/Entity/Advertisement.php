@@ -66,6 +66,13 @@ class Advertisement
     private $city;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="publicationTime", type="datetime")
+     */
+    private $publicationTime;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="advertisements")
      */
     private $category;
@@ -83,6 +90,7 @@ class Advertisement
 
     public function __construct()
     {
+        $this->publicationTime = new \DateTime('now');
         $this->customers = new ArrayCollection();
     }
 
@@ -191,6 +199,22 @@ class Advertisement
         $this->author = $author;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublicationTime(): \DateTime
+    {
+        return $this->publicationTime;
+    }
+
+    /**
+     * @param \DateTime $publicationTime
+     */
+    public function setPublicationTime(\DateTime $publicationTime): void
+    {
+        $this->publicationTime = $publicationTime;
     }
 
     /**
