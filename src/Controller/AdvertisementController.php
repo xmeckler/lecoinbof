@@ -52,7 +52,11 @@ class AdvertisementController extends Controller
      */
     public function show(Advertisement $advertisement): Response
     {
-        return $this->render('advertisement/show.html.twig', ['advertisement' => $advertisement]);
+        $user = $this->getUser();
+        return $this->render('advertisement/show.html.twig', [
+            'advertisement' => $advertisement,
+            'user' => $user,
+        ]);
     }
 
     /**
