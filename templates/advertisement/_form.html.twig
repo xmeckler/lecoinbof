@@ -5,7 +5,7 @@
     {{ form_row(form.title, { 'label': 'Titre' }) }}
     {{ form_row(form.description, { 'label': 'Décrire votre objet: dimensions, date d\'achat, état, etc...' }) }}
     {{ form_row(form.price, { 'label': 'Prix (en euros €)' }) }}
-    {{ form_row(form.image, { 'label': 'Image' }) }}
+    {{ form_row(form.imageFile, { 'label' : 'Photo :', 'attr' : {'class' : 'custom-file-input', 'id' : 'customFile'}}) }}
     {{ form_row(form.city, { 'label': 'Ville où l\'on peut récupérer l\'objet' }) }}
     <div class="text-center">
         <button class="btn btn-primary float-md-right mb-3"><i class="far fa-paper-plane"></i> {{ button_label|default('Publier') }}</button>
