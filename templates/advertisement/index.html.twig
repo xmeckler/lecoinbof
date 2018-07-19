@@ -1,43 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Advertisement index{% endblock %}
-
+{% block title %}Les annonces{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/advertisements.css') }}">
+{% endblock %}
 {% block body %}
-    <h1>Advertisement index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>City</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for advertisement in advertisements %}
-            <tr>
-                <td>{{ advertisement.id }}</td>
-                <td>{{ advertisement.title }}</td>
-                <td>{{ advertisement.description }}</td>
-                <td>{{ advertisement.price }}</td>
-                <td>{{ advertisement.image }}</td>
-                <td>{{ advertisement.city }}</td>
-                <td>
-                    <a href="{{ path('advertisement_show', {'id': advertisement.id}) }}">show</a>
-                    <a href="{{ path('advertisement_edit', {'id': advertisement.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('advertisement_new') }}">Create new</a>
+    <div class="container my-5">
+        <div class="row my-2">
+            {% if advertisements is not empty %}
+                {% for advertisement in advertisements | reverse %}
+                    <div class="col-xl-3 col-md-6 offset-md-0 col-lg-4">
+                        <div class="card mx-2 mb-4">
+                            <a href="{{ path('advertisement_show', { 'id': advertisement.id }) }}">
+                                <div class="overlay">
+                                    <img class="card-img-top image"
+                                         src="{{ vich_uploader_asset(advertisement, 'imageFile') }}{{ advertisement.imageFile }}"
+                                         alt="{{ advertisement.title }}">
+                                    <span class="text-description p-1">
+                                    {% if advertisement.description|length > 150 %}
+                                        {{ advertisement.description|slice(0, 150) ~ '...' }}
+                                    {% else %}
+                                        {{ advertisement.description }}
+                                    {% endif %}
+                                </span>
+                                </div>
+                            </a>
+                            <div class="card-body">
+                                <div class="card-title text-center">
+                                    <h2>
+                                        <b>
+                                            <em>
+                                        {% if advertisement.title|length > 20 %}
+                                            {{ advertisement.title|slice(0, 20) ~ '...' }}
+                                        {% else %}
+                                            {{ advertisement.title }}
+                                        {% endif %}
+                                            </em>
+                                        </b>
+                                    </h2>
+                                    <h2><span class="badge badge-warning">{{ advertisement.price }} €</span></h2>
+                                    <h3 class="mt-2">Ville : {{ advertisement.city }}</h3>
+                                    <div class="row d-inline-block">
+                                        <h3 class="mt-2 d-inline">Publiée le: {{ advertisement.publicationTime|date("d/m/Y", "Europe/Paris") }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center col-12">Aucune annonce n'a été trouvée</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
