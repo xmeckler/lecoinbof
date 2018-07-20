@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('build/css/advertisements.css') }}">
 {% endblock %}
 {% block body %}
-    <h1 class="mt-5 text-center">Toutes les annonces :</h1>
+    <h1 class="mt-5 text-center">Les annonces publiées par: {{ user.username }}</h1>
     <div class="container my-5">
         <div class="row my-2">
             {% include 'advertisement/cardsListing.html.twig' %}
