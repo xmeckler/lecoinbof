@@ -38,6 +38,21 @@ class Message
      */
     private $authorIsAdOwner;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="publicationTime", type="datetime")
+     */
+    private $postedAt;
+
+    /**
+     * Message constructor.
+     */
+    public function __construct()
+    {
+        $this->postedAt = new \DateTime('now');
+    }
+
     public function getId()
     {
         return $this->id;
@@ -90,4 +105,22 @@ class Message
 
         return $this;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPostedAt(): \DateTime
+    {
+        return $this->postedAt;
+    }
+
+    /**
+     * @param \DateTime $postedAt
+     */
+    public function setPostedAt(\DateTime $postedAt): void
+    {
+        $this->postedAt = $postedAt;
+    }
+
+
 }
