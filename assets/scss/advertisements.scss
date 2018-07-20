@@ -1,0 +1,36 @@
+.card {
+  width: 16rem;
+  transition: 0.5s ease;
+  height: 300px;
+  .overlay {
+    bottom: 32%;
+    .text-description {
+      position: absolute;
+      min-height: 160px;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transition: .5s ease;
+      background-color: white;
+      color: black;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+  &:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    .text-description {
+      opacity: 0.8;
+    }
+  }
+  img {
+    height: 160px;
+  }
+  h2 {
+    font-size: calc(12px + 8 * (40vw - 220px) / 1800);
+  }
+  h3 {
+    font-size: calc(10px + 8 * (40vw - 220px) / 1800);
+  }
+}

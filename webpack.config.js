@@ -12,8 +12,11 @@ Encore
 
     // uncomment to define the assets of the project
     .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/form-file-type', './assets/js/form-file-type.js')
+    .addEntry('banner-bof', './assets/images/banner-bof.jpg')
     .addStyleEntry('css/app', './assets/scss/app.scss')
-
+    .addStyleEntry('css/homepage', './assets/scss/homepage.scss')
+    .addStyleEntry('css/advertisements', './assets/scss/advertisements.scss')
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
 

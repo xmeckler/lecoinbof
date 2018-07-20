@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Advertisement{% endblock %}
+
+{% block body %}
+    <div class="container shadow my-5">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <div class="row mb-4 pt-5">
+            <div class="col-md-10">
+                <h1>{{ advertisement.title }}</h1>
+            </div>
+            <div class="col-md-2">
+                <p class="text-md-right"><span class="badge badge-warning">{{ advertisement.price }} €</span></p>
+            </div>
+        </div>
+        <div class="row pictureRow">
+            <div class="col-md-4">
+                <img src="{{ vich_uploader_asset(advertisement, 'imageFile') }}" alt="{{ advertisement.title }}" class="img-fluid">
+            </div>
+            <div class="col-md-8 mt-md-0 mt-3">
+                <p class="px-md-3 pb-md-0 pb-3">{{ advertisement.description | nl2br }}</p>
+                <p class="soldBy mb-0 px-md-3"><b>Vendu par:</b> {{ advertisement.author.username }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pt-3">
+                <p><b>Localisation:</b> {{ advertisement.city }}</p>
+            </div>
+            <div class="col-md-6 pt-3">
+                <p class="text-md-right"><b>Postée le:</b> {{ advertisement.publicationTime|date("d/m/Y", "Europe/Paris") }}</p>
+            </div>
+        </div>
+        {% if user == advertisement.author %}
+            <div class="row text-center mb-5 pb-5">
+                <a href="{{ path('advertisement_index') }}" class="btn btn-dark float-md-left ml-md-5 mr-md-auto mb-3 mx-auto"><i class="far fa-newspaper"></i> Mes annonces</a>
+                    {{ include('advertisement/_delete_form.html.twig') }}
+                <a href="{{ path('advertisement_edit', {'id': advertisement.id}) }}" class="btn btn-primary float-md-right mr-md-5 ml-md-auto mb-3 mx-auto"><i class="fas fa-pen-fancy"></i> Modifier</a>
+            </div>
+        {% elseif user is not null %}
+        <!-- Button trigger modal -->
+        <div class="row text-center mb-5 pb-5">
+            <a href="{{ path('advertisement_index') }}" class="btn btn-dark float-md-left ml-md-5 mr-md-auto mb-3 mx-auto"><i class="fas fa-chevron-left"></i> Toutes les annonces</a>
+            <button type="button" class="btn btn-primary float-md-right mr-md-5 ml-md-auto mb-3 mx-auto" data-toggle="modal" data-target="#messageModal">
+                <i class="fas fa-pen-fancy"></i> Répondre à cette annonce
+            </button>
+        </div>
+        {% else %}
+            <div class="text-center">
+                <p><em>Connectez-vous pour répondre à cette annonce !</em></p>
+            </div>
+        {% endif %}
+        <!-- Modal -->
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalTitle">Rédiger votre message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(form) }}
+                        {{ form_label(form.content) }}
+                        {{ form_widget(form.content, { 'attr': {'rows' : '4', 'class' : 'form-control'} }) }}
+                        {{ form_errors(form.content) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Annuler</button>
+                        <button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Envoyer</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les annonces{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/advertisements.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="container my-5">
+        <div class="row my-2">
+            {% if advertisements is not empty %}
+                {% for advertisement in advertisements | reverse %}
+                    <div class="col-xl-3 col-md-6 offset-md-0 col-lg-4">
+                        <div class="card mx-2 mb-4">
+                            <a href="{{ path('advertisement_show', { 'id': advertisement.id }) }}">
+                                <div class="overlay">
+                                    <img class="card-img-top image"
+                                         src="{{ vich_uploader_asset(advertisement, 'imageFile') }}{{ advertisement.imageFile }}"
+                                         alt="{{ advertisement.title }}">
+                                    <span class="text-description p-1">
+                                    {% if advertisement.description|length > 150 %}
+                                        {{ advertisement.description|slice(0, 150) ~ '...' }}
+                                    {% else %}
+                                        {{ advertisement.description }}
+                                    {% endif %}
+                                </span>
+                                </div>
+                            </a>
+                            <div class="card-body">
+                                <div class="card-title text-center">
+                                    <h2>
+                                        <b>
+                                            <em>
+                                        {% if advertisement.title|length > 20 %}
+                                            {{ advertisement.title|slice(0, 20) ~ '...' }}
+                                        {% else %}
+                                            {{ advertisement.title }}
+                                        {% endif %}
+                                            </em>
+                                        </b>
+                                    </h2>
+                                    <h2><span class="badge badge-warning">{{ advertisement.price }} €</span></h2>
+                                    <h3 class="mt-2">Ville : {{ advertisement.city }}</h3>
+                                    <div class="row d-inline-block">
+                                        <h3 class="mt-2 d-inline">Publiée le: {{ advertisement.publicationTime|date("d/m/Y", "Europe/Paris") }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center col-12">Aucune annonce n'a été trouvée</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
