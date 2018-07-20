@@ -88,10 +88,16 @@ class Advertisement
      */
     private $customers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="advertisement", orphanRemoval=true)
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->publicationTime = new \DateTime('now');
         $this->customers = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId()
@@ -238,6 +244,37 @@ class Advertisement
     {
         if ($this->customers->contains($customer)) {
             $this->customers->removeElement($customer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setAdvertisement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getAdvertisement() === $this) {
+                $message->setAdvertisement(null);
+            }
         }
 
         return $this;

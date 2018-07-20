@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Advertisement;
+use App\Entity\Message;
 use App\Form\AdvertisementType;
+use App\Form\MessageType;
 use App\Repository\AdvertisementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,14 +50,36 @@ class AdvertisementController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="advertisement_show", methods="GET")
+     * @Route("/{id}", name="advertisement_show", methods="GET|POST")
      */
-    public function show(Advertisement $advertisement): Response
+    public function show(Request $request, Advertisement $advertisement): Response
     {
         $user = $this->getUser();
+        $message = new Message();
+        $message->setAuthor($user);
+        $message->setAdvertisement($advertisement);
+        $adAuthor = $advertisement->getAuthor();
+        if ($user == $adAuthor) {
+            $message->setAuthorIsAdOwner(true);
+        } else {
+            $message->setAuthorIsAdOwner(false);
+        }
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
+
+            $this->addFlash('success', 'Votre message a été transmis à l\'auteur de cette annonce !');
+
+            return $this->redirectToRoute('advertisement_show', ['id' => $advertisement->getId()]);
+        }
         return $this->render('advertisement/show.html.twig', [
             'advertisement' => $advertisement,
             'user' => $user,
+            'form' => $form->createView(),
         ]);
     }
 

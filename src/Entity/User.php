@@ -58,10 +58,16 @@ class User implements UserInterface, \Serializable
      */
     private $repliedAds;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author", orphanRemoval=true)
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->publishedAds = new ArrayCollection();
         $this->repliedAds = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId()
@@ -211,6 +217,37 @@ class User implements UserInterface, \Serializable
         if ($this->repliedAds->contains($repliedAd)) {
             $this->repliedAds->removeElement($repliedAd);
             $repliedAd->removeCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getAuthor() === $this) {
+                $message->setAuthor(null);
+            }
         }
 
         return $this;
