@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Advertisement;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Form\AdvertisementType;
 use App\Form\MessageType;
 use App\Repository\AdvertisementRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +25,18 @@ class AdvertisementController extends Controller
     public function index(AdvertisementRepository $advertisementRepository): Response
     {
         return $this->render('advertisement/index.html.twig', ['advertisements' => $advertisementRepository->findAll()]);
+    }
+
+    /**
+     * @Route("/author/{username}", name="advertisement_authorList", methods="GET")
+     * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     */
+    public function listUserAds(AdvertisementRepository $advertisementRepository, User $user): Response
+    {
+        return $this->render('advertisement/listUserAds.html.twig', [
+            'advertisements' => $advertisementRepository->findBy(['author' => $user]),
+            'user' => $user,
+        ]);
     }
 
     /**
