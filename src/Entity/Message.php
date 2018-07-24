@@ -34,9 +34,10 @@ class Message
     private $advertisement;
 
     /**
-     * @ORM\Column(type="boolean")
+     * References the message id for which the message is the reply (null if the message is not a reply)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $authorIsAdOwner;
+    private $replyToMessage;
 
     /**
      * @var \DateTime
@@ -94,16 +95,20 @@ class Message
         return $this;
     }
 
-    public function getAuthorIsAdOwner(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getReplyToMessage()
     {
-        return $this->authorIsAdOwner;
+        return $this->replyToMessage;
     }
 
-    public function setAuthorIsAdOwner(bool $authorIsAdOwner): self
+    /**
+     * @param mixed $replyToMessage
+     */
+    public function setReplyToMessage($replyToMessage): void
     {
-        $this->authorIsAdOwner = $authorIsAdOwner;
-
-        return $this;
+        $this->replyToMessage = $replyToMessage;
     }
 
     /**
@@ -121,6 +126,4 @@ class Message
     {
         $this->postedAt = $postedAt;
     }
-
-
 }

@@ -24,7 +24,8 @@ class AdvertisementController extends Controller
      */
     public function index(AdvertisementRepository $advertisementRepository): Response
     {
-        return $this->render('advertisement/index.html.twig', ['advertisements' => $advertisementRepository->findAll()]);
+        return $this->render('advertisement/index.html.twig', [
+            'advertisements' => $advertisementRepository->findAll()]);
     }
 
     /**
@@ -72,12 +73,6 @@ class AdvertisementController extends Controller
         $message = new Message();
         $message->setAuthor($user);
         $message->setAdvertisement($advertisement);
-        $adAuthor = $advertisement->getAuthor();
-        if ($user == $adAuthor) {
-            $message->setAuthorIsAdOwner(true);
-        } else {
-            $message->setAuthorIsAdOwner(false);
-        }
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
@@ -86,10 +81,11 @@ class AdvertisementController extends Controller
             $em->persist($message);
             $em->flush();
 
-            $this->addFlash('success', 'Votre message a été transmis à l\'auteur de cette annonce !');
+            $this->addFlash('success', 'Votre message a été transmis !');
 
             return $this->redirectToRoute('advertisement_show', ['id' => $advertisement->getId()]);
         }
+
         return $this->render('advertisement/show.html.twig', [
             'advertisement' => $advertisement,
             'user' => $user,

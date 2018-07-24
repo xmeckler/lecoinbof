@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,11 @@ class MessageType extends AbstractType
         $builder
             ->add('content', null, array(
                 'label' => false
-            ));
+            ))
+            ->add('replyToMessage', HiddenType::class, array(
+                'label' => false
+            ))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
