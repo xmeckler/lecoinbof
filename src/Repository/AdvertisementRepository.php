@@ -22,7 +22,7 @@ class AdvertisementRepository extends ServiceEntityRepository
     /**
      * @return Advertisement[] Returns an array of Advertisement objects
      */
-    public function findByExampleField($value)
+    public function searchAdvertisements($input)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.title LIKE :input')
