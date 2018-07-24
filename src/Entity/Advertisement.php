@@ -93,6 +93,11 @@ class Advertisement
      */
     private $messages;
 
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     public function __construct()
     {
         $this->publicationTime = new \DateTime('now');
