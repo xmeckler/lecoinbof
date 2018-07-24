@@ -13,7 +13,9 @@ class SearchAdvertisementType extends AbstractType
         $builder
             ->setAction('/search')
             ->setMethod('GET')
-            ->add('search')
+            ->add('search', null, array(
+                'label' => false
+            ))
 
         ;
     }

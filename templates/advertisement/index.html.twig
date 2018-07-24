@@ -1,10 +1,22 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Les annonces{% endblock %}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('build/css/advertisements.css') }}">
 {% endblock %}
 {% block body %}
+    <div class="text-center">
+        <h3>Rechercher parmi les annonces:</h3>
+    </div>
+    <div class="text-center">
+        <div class="w-50 m-auto">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+            {{ form_end(form) }}
+        </div>
+    </div>
     <h1 class="mt-5 text-center">Toutes les annonces :</h1>
     <div class="container my-5">
         <div class="row my-2">

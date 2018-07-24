@@ -26,7 +26,7 @@ class AdvertisementRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.title LIKE :input')
-            ->orWhere('a.content LIKE :input')
+            ->orWhere('a.description LIKE :input')
             ->setParameter('input', "%$input%")
             ->orderBy('a.id', 'ASC')
             ->getQuery()

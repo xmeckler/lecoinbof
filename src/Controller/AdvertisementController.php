@@ -7,6 +7,7 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Form\AdvertisementType;
 use App\Form\MessageType;
+use App\Form\SearchAdvertisementType;
 use App\Repository\AdvertisementRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,8 +25,11 @@ class AdvertisementController extends Controller
      */
     public function index(AdvertisementRepository $advertisementRepository): Response
     {
+        $form = $this->createForm(SearchAdvertisementType::class);
         return $this->render('advertisement/index.html.twig', [
-            'advertisements' => $advertisementRepository->findAll()]);
+            'advertisements' => $advertisementRepository->findAll(),
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
