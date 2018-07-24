@@ -86,7 +86,6 @@
                                         <td><i class="far fa-comments"></i></td>
                                         <td><i class="far fa-comments"></i></td>
                                     </tr>
-
                                 {% endif %}
                             {% endfor %}
                         </tbody>
@@ -100,6 +99,47 @@
             <button type="button" class="btn btn-primary float-md-right mr-md-5 ml-md-auto mb-3 mx-auto" data-toggle="modal" data-target="#messageModal">
                 <i class="fas fa-pen-fancy"></i> Répondre à cette annonce
             </button>
+        </div>
+        <div class="row text-center mb-5 pb-5">
+            <div class="col-12 text-center">
+                <h3 class="pb-3"><i class="far fa-comments"></i> Vos messages à l'auteur de cette annonce et ses réponses:</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Posté le:</th>
+                            <th>Par:</th>
+                            <th>Message:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for message in advertisement.messages %}
+                        {% if message.author == user %}
+                            <tr>
+                                <td>{% if message.postedAt %}{{ message.postedAt|date('d/m/Y H:i') }}{% endif %}</td>
+                                <td>{{ message.author.username }}</td>
+                                <td>{{ message.content }}</td>
+                            </tr>
+                            {% for reply in advertisement.messages %}
+                                {% if reply.replyToMessage is same as (message.id) %}
+                                    <tr class="table-info">
+                                        <td>{% if reply.postedAt %}{{ reply.postedAt|date('d/m/Y H:i') }}{% endif %}</td>
+                                        <td>{{ reply.author.username }}</td>
+                                        <td>{{ reply.content }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                                <tr class="text-center">
+                                    <td><i class="far fa-comments"></i></td>
+                                    <td><i class="far fa-comments"></i></td>
+                                    <td><i class="far fa-comments"></i></td>
+                                </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% else %}
             <div class="text-center">
