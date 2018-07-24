@@ -41,6 +41,27 @@ class AdvertisementController extends Controller
     }
 
     /**
+     * @Route("/requests/{username}", name="advertisement_user_requests", methods="GET")
+     * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     */
+    public function listRepliedAds(User $user): Response
+    {
+        $messages = $user->getMessages();
+        $advertisements = [];
+        foreach ($messages as $message) {
+            $advertisement = $message->getAdvertisement();
+            if ($message->getReplyToMessage() === null && !in_array($advertisement, $advertisements)) {
+                $advertisements[] = $advertisement;
+            }
+        }
+
+        return $this->render('advertisement/listUserRequests.html.twig', [
+            'advertisements' => $advertisements,
+            'user' => $user,
+        ]);
+    }
+
+    /**
      * @Route("/new", name="advertisement_new", methods="GET|POST")
      */
     public function new(Request $request): Response
