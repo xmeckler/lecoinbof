@@ -14,7 +14,10 @@ class SearchAdvertisementType extends AbstractType
             ->setAction('/search')
             ->setMethod('GET')
             ->add('search', null, array(
-                'label' => false
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Nom de l\'objet recherché',
+                ),
             ))
 
         ;

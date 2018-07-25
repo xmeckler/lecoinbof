@@ -10,10 +10,12 @@
         <h3>Rechercher parmi les annonces:</h3>
     </div>
     <div class="text-center">
-        <div class="w-50 m-auto">
+        <div class="w-75 m-auto">
             {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+            <div class="form-inline justify-content-center py-2">
+                {{ form_widget(form) }}
+                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Rechercher</button>
+            </div>
             {{ form_end(form) }}
         </div>
     </div>
