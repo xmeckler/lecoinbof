@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Advertisement;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Form\AdvertisementType;
 use App\Form\MessageType;
+use App\Form\SearchAdvertisementType;
 use App\Repository\AdvertisementRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +25,44 @@ class AdvertisementController extends Controller
      */
     public function index(AdvertisementRepository $advertisementRepository): Response
     {
-        return $this->render('advertisement/index.html.twig', ['advertisements' => $advertisementRepository->findAll()]);
+        $form = $this->createForm(SearchAdvertisementType::class);
+        return $this->render('advertisement/index.html.twig', [
+            'advertisements' => $advertisementRepository->findAll(),
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/author/{username}", name="advertisement_authorList", methods="GET")
+     * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     */
+    public function listUserAds(AdvertisementRepository $advertisementRepository, User $user): Response
+    {
+        return $this->render('advertisement/listUserAds.html.twig', [
+            'advertisements' => $advertisementRepository->findBy(['author' => $user]),
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/requests/{username}", name="advertisement_user_requests", methods="GET")
+     * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     */
+    public function listRepliedAds(User $user): Response
+    {
+        $messages = $user->getMessages();
+        $advertisements = [];
+        foreach ($messages as $message) {
+            $advertisement = $message->getAdvertisement();
+            if ($message->getReplyToMessage() === null && !in_array($advertisement, $advertisements)) {
+                $advertisements[] = $advertisement;
+            }
+        }
+
+        return $this->render('advertisement/listUserRequests.html.twig', [
+            'advertisements' => $advertisements,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -58,12 +98,6 @@ class AdvertisementController extends Controller
         $message = new Message();
         $message->setAuthor($user);
         $message->setAdvertisement($advertisement);
-        $adAuthor = $advertisement->getAuthor();
-        if ($user == $adAuthor) {
-            $message->setAuthorIsAdOwner(true);
-        } else {
-            $message->setAuthorIsAdOwner(false);
-        }
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
@@ -72,10 +106,11 @@ class AdvertisementController extends Controller
             $em->persist($message);
             $em->flush();
 
-            $this->addFlash('success', 'Votre message a été transmis à l\'auteur de cette annonce !');
+            $this->addFlash('success', 'Votre message a été transmis !');
 
             return $this->redirectToRoute('advertisement_show', ['id' => $advertisement->getId()]);
         }
+
         return $this->render('advertisement/show.html.twig', [
             'advertisement' => $advertisement,
             'user' => $user,

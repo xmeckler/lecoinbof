@@ -38,9 +38,59 @@
         </div>
         {% if user == advertisement.author %}
             <div class="row text-center mb-5 pb-5">
-                <a href="{{ path('advertisement_index') }}" class="btn btn-dark float-md-left ml-md-5 mr-md-auto mb-3 mx-auto"><i class="far fa-newspaper"></i> Mes annonces</a>
+                <a href="{{ path('advertisement_authorList', { 'username': app.user.username }) }}" class="btn btn-secondary float-md-left ml-md-5 mr-md-auto mb-3 mx-auto"><i class="far fa-newspaper"></i> Mes annonces</a>
                     {{ include('advertisement/_delete_form.html.twig') }}
                 <a href="{{ path('advertisement_edit', {'id': advertisement.id}) }}" class="btn btn-primary float-md-right mr-md-5 ml-md-auto mb-3 mx-auto"><i class="fas fa-pen-fancy"></i> Modifier</a>
+            </div>
+            <hr>
+            <div class="row text-center mb-5 pb-5">
+                <div class="col-12 text-center">
+                    <h3 class="pb-3"><i class="far fa-comments"></i> Les réponses à cette annonce:</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Postée le:</th>
+                                <th>Par:</th>
+                                <th>Message:</th>
+                                <th>Action:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in advertisement.messages %}
+                                {% if message.replyToMessage is null %}
+                                <tr>
+                                    <td>{% if message.postedAt %}{{ message.postedAt|date('d/m/Y H:i') }}{% endif %}</td>
+                                    <td>{{ message.author.username }}</td>
+                                    <td>{{ message.content }}</td>
+                                    <td class="text-center">
+                                        <button id="{{ message.id }}" type="button" class="btn btn-info replyButton" data-toggle="modal" data-target="#messageModal">
+                                            <i class="fas fa-pen-fancy"></i> Répondre
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% for reply in advertisement.messages %}
+                                    {% if reply.replyToMessage is same as (message.id) %}
+                                        <tr class="table-info">
+                                            <td>{% if reply.postedAt %}{{ reply.postedAt|date('d/m/Y H:i') }}{% endif %}</td>
+                                            <td>{{ reply.author.username }}</td>
+                                            <td>{{ reply.content }}</td>
+                                            <td><i class="fas fa-check"></i> Répondu</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                    <tr class="text-center">
+                                        <td><i class="far fa-comments"></i></td>
+                                        <td><i class="far fa-comments"></i></td>
+                                        <td><i class="far fa-comments"></i></td>
+                                        <td><i class="far fa-comments"></i></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         {% elseif user is not null %}
         <!-- Button trigger modal -->
@@ -49,6 +99,47 @@
             <button type="button" class="btn btn-primary float-md-right mr-md-5 ml-md-auto mb-3 mx-auto" data-toggle="modal" data-target="#messageModal">
                 <i class="fas fa-pen-fancy"></i> Répondre à cette annonce
             </button>
+        </div>
+        <div class="row text-center mb-5 pb-5">
+            <div class="col-12 text-center">
+                <h3 class="pb-3"><i class="far fa-comments"></i> Vos messages à l'auteur de cette annonce et ses réponses:</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Posté le:</th>
+                            <th>Par:</th>
+                            <th>Message:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for message in advertisement.messages %}
+                        {% if message.author == user %}
+                            <tr>
+                                <td>{% if message.postedAt %}{{ message.postedAt|date('d/m/Y H:i') }}{% endif %}</td>
+                                <td>{{ message.author.username }}</td>
+                                <td>{{ message.content }}</td>
+                            </tr>
+                            {% for reply in advertisement.messages %}
+                                {% if reply.replyToMessage is same as (message.id) %}
+                                    <tr class="table-info">
+                                        <td>{% if reply.postedAt %}{{ reply.postedAt|date('d/m/Y H:i') }}{% endif %}</td>
+                                        <td>{{ reply.author.username }}</td>
+                                        <td>{{ reply.content }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                                <tr class="text-center">
+                                    <td><i class="far fa-comments"></i></td>
+                                    <td><i class="far fa-comments"></i></td>
+                                    <td><i class="far fa-comments"></i></td>
+                                </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% else %}
             <div class="text-center">
@@ -70,6 +161,9 @@
                         {{ form_label(form.content) }}
                         {{ form_widget(form.content, { 'attr': {'rows' : '4', 'class' : 'form-control'} }) }}
                         {{ form_errors(form.content) }}
+                        {{ form_label(form.replyToMessage) }}
+                        {{ form_widget(form.replyToMessage, { 'attr': { 'class' : 'replyToMessage'} }) }}
+                        {{ form_errors(form.replyToMessage) }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Annuler</button>
@@ -80,4 +174,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('build/js/setIsReplyTo.js') }}"></script>
 {% endblock %}

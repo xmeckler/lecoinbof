@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/advertisements.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Résultats</h1>
+    <div class="container my-5">
+        <div class="row my-2">
+            {% if proposal %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-danger">Aucun résultat, vouliez-vous dire <a href="{{ path('search') }}?search={{ proposal }}">{{ proposal }}</a> ?</div>
+                </div>
+            {% endif %}
+
+            {% for advertisement in advertisements %}
+                {% include 'advertisement/cardsListing.html.twig' %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p><i class="far fa-frown"></i> Aucune annonce ne correspond à votre recherche</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

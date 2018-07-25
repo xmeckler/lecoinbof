@@ -122,6 +122,9 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
+    "squizlabs/php_codesniffer": {
+        "version": "3.3.0"
+    },
     "swiftmailer/swiftmailer": {
         "version": "v6.1.1"
     },

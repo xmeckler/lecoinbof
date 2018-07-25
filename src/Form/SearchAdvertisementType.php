@@ -2,30 +2,33 @@
 
 namespace App\Form;
 
-use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MessageType extends AbstractType
+class SearchAdvertisementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', null, array(
+            ->setAction('/search')
+            ->setMethod('GET')
+            ->add('search', null, array(
                 'label' => false
             ))
-            ->add('replyToMessage', HiddenType::class, array(
-                'label' => false
-            ))
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Message::class,
+            'csrf_protection' => false,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return false;
     }
 }

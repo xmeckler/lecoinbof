@@ -34,9 +34,25 @@ class Message
     private $advertisement;
 
     /**
-     * @ORM\Column(type="boolean")
+     * References the message id for which the message is the reply (null if the message is not a reply)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $authorIsAdOwner;
+    private $replyToMessage;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="publicationTime", type="datetime")
+     */
+    private $postedAt;
+
+    /**
+     * Message constructor.
+     */
+    public function __construct()
+    {
+        $this->postedAt = new \DateTime('now');
+    }
 
     public function getId()
     {
@@ -79,15 +95,35 @@ class Message
         return $this;
     }
 
-    public function getAuthorIsAdOwner(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getReplyToMessage()
     {
-        return $this->authorIsAdOwner;
+        return $this->replyToMessage;
     }
 
-    public function setAuthorIsAdOwner(bool $authorIsAdOwner): self
+    /**
+     * @param mixed $replyToMessage
+     */
+    public function setReplyToMessage($replyToMessage): void
     {
-        $this->authorIsAdOwner = $authorIsAdOwner;
+        $this->replyToMessage = $replyToMessage;
+    }
 
-        return $this;
+    /**
+     * @return \DateTime
+     */
+    public function getPostedAt(): \DateTime
+    {
+        return $this->postedAt;
+    }
+
+    /**
+     * @param \DateTime $postedAt
+     */
+    public function setPostedAt(\DateTime $postedAt): void
+    {
+        $this->postedAt = $postedAt;
     }
 }
